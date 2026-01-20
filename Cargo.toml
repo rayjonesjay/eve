@@ -3,3 +3,6 @@ name = "tonia"
 version = "0.0.0"
 edition = "2024"
 description = "a bitcoin library in rust, built from scratch, dont use in production"
+license="MIT"
+categories=["blockchain","cryptocurrency","cryptography"]
+authors=["ray"]
