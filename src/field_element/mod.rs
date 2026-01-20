@@ -1,7 +1,7 @@
 // src/field_element.rs
-use std::fmt;
-use std::ops::{Add, Sub};
 use crate::math::is_prime;
+use std::fmt;
+use std::ops::{Add, Mul, Sub, Div};
 
 #[derive(Clone, Copy)]
 pub struct FieldElement {
@@ -21,11 +21,11 @@ impl fmt::Debug for FieldElement {
 
 impl FieldElement {
     pub fn new(element: u64, prime: u64) -> Result<Self, String> {
-        if !is_prime(prime) {
-            return Err("order must be a prime number".to_string());
-        }
         if element >= prime {
             return Err(format!("{} not in field range 0 to {}", element, prime - 1));
+        }
+        if !is_prime(prime) {
+            return Err(format!("{} is not prime", prime));
         }
         Ok(FieldElement { element, prime })
     }
@@ -63,6 +63,20 @@ impl Sub for FieldElement {
     }
 }
 
+impl Mul for FieldElement {
+    type Output = Result<FieldElement, String>;
+    fn mul(self, other: FieldElement) -> Result<FieldElement, String> {
+        if self.prime != other.prime {
+            return Err("cannot multiply elements from different fields.".to_string());
+        }
+        let result: u64 = (self.element * other.element) % self.prime;
+        Ok(FieldElement {
+            element: result,
+            prime: self.prime,
+        })
+    }
+}
+
 // PartialEq checks if two objects of type FieldElement are equal
 impl PartialEq for FieldElement {
     fn eq(&self, other: &Self) -> bool {
@@ -70,6 +84,22 @@ impl PartialEq for FieldElement {
     }
 }
 
-// leave the body empty
-impl Eq for FieldElement {}
+impl Div for FieldElement {
+    type Output = Result<FieldElement, String>;
+    fn div(self, other: FieldElement) -> Result<FieldElement, String> {
+       if self.prime != other.prime {
+           return Err("cannot divide elements from different fields.".to_string());
+       }
+        let mut inverse_of_divisor = 0;
+        // loop from 0 up to prime-1
+        for i in 0..self.prime{
+            if (other.element * i) % self.prime == 1 {
+                inverse_of_divisor = i;
+                break
+            }
+        }
+        Ok(FieldElement{element:(self.element * inverse_of_divisor) % self.prime,prime:self.prime})
+    }
+}
 
+impl Eq for FieldElement {}
