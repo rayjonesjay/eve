@@ -1,4 +1,5 @@
-use eve::field_element::FieldElement;
+use tonia::field_element::FieldElement;
+use tonia::math::is_prime;
 
 /// `test_field_element_addition`: tests addition between finite field elements
 #[test]

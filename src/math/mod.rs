@@ -21,11 +21,21 @@ pub fn is_prime(num: u64) -> bool {
 
     // get the square root of num by converting it to float then computing square root
     // then convert to u64
-    let sqrt_limit = (num as f64).sqrt() as u64;
+    let sqrt_limit = integer_sqrt(num);
     for i in (5..=sqrt_limit).step_by(6) {
         if num % i == 0 || num % (i + 2) == 0 {
             return false;
         };
     }
     true
+}
+
+pub fn integer_sqrt(num: u64) -> u64 {
+    let mut initial_guess = num / 2;
+    let mut y = 1;
+    while initial_guess > y {
+        initial_guess = (initial_guess + y) / 2;
+        y = num/initial_guess
+    }
+    initial_guess
 }
