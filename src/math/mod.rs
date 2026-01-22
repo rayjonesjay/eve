@@ -19,8 +19,7 @@ pub fn is_prime(num: u64) -> bool {
         return false;
     };
 
-    // get the square root of num by converting it to float then computing square root
-    // then convert to u64
+    // compute integer square root
     let sqrt_limit = integer_sqrt(num);
     for i in (5..=sqrt_limit).step_by(6) {
         if num % i == 0 || num % (i + 2) == 0 {
