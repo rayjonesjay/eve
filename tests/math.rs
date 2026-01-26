@@ -1,5 +1,5 @@
-use tonia::math::is_prime;
 use tonia::math::integer_sqrt;
+use tonia::math::is_prime;
 
 /// test_prime - test prime check function
 #[test]
@@ -14,5 +14,5 @@ fn test_prime() {
 fn test_integer_sqrt() {
     assert_eq!(integer_sqrt(64), 8);
     assert_eq!(integer_sqrt(0), 0);
-    assert_eq!(integer_sqrt(25),5);
+    assert_eq!(integer_sqrt(25), 5);
 }

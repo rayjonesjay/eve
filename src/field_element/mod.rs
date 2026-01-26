@@ -1,7 +1,7 @@
 // src/field_element.rs
 use crate::math::is_prime;
 use std::fmt;
-use std::ops::{Add, Mul, Sub, Div};
+use std::ops::{Add, Div, Mul, Sub};
 
 #[derive(Clone, Copy)]
 pub struct FieldElement {
@@ -87,18 +87,21 @@ impl PartialEq for FieldElement {
 impl Div for FieldElement {
     type Output = Result<FieldElement, String>;
     fn div(self, other: FieldElement) -> Result<FieldElement, String> {
-       if self.prime != other.prime {
-           return Err("cannot divide elements from different fields.".to_string());
-       }
+        if self.prime != other.prime {
+            return Err("cannot divide elements from different fields.".to_string());
+        }
         let mut inverse_of_divisor = 0;
         // loop from 0 up to prime-1
-        for i in 0..self.prime{
+        for i in 0..self.prime {
             if (other.element * i) % self.prime == 1 {
                 inverse_of_divisor = i;
-                break
+                break;
             }
         }
-        Ok(FieldElement{element:(self.element * inverse_of_divisor) % self.prime,prime:self.prime})
+        Ok(FieldElement {
+            element: (self.element * inverse_of_divisor) % self.prime,
+            prime: self.prime,
+        })
     }
 }
 
